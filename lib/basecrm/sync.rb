@@ -45,6 +45,10 @@ module BaseCRM
       # Check if there is anything to synchronize
       return unless  session && session.id
 
+      if defined?(Rails)
+        Rails.logger.debug "STARTING BaseCRM Sync: #{session.queues.first.total_count} total items to sync over #{session.queues.first.pages} pages..."
+      end
+
       # Drain the main queue unitl there is no more data (empty array)
       loop do
         queued_data = @client.sync.fetch(@device_uuid, session.id)
